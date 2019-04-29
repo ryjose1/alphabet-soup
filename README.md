@@ -12,7 +12,7 @@ Load a character grid with scrambled words embedded within it and a words list o
 ### Input Format
 The program is to accept a file as input. The file is an ASCII text file containing the word search board along with the words that need to be found. 
 
-The file contains three parts. The first part is the first line, and specifies the number of rows and columns in the grid of characters, separated by a space. The second part provides the grid of characters in the word search. The third part in the file specifies the words to be found.
+The file contains three parts. The first part is the first line, and specifies the number of rows and columns in the grid of characters, separated by an 'x'. The second part provides the grid of characters in the word search. The third part in the file specifies the words to be found.
 
 The first line indicates how many following lines in the file contain the rows of characters that make up the word search grid. Each row in the word search grid will have the specified number of columns of characters, each separated with a space. The remaining lines in the file specify the words to be found.
 
