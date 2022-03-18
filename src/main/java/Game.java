@@ -6,8 +6,7 @@ public class Game {
     private List<String> words;
 
     public Game() {
-        this.grid = new Grid(0, 0);
-        this.words = new ArrayList<String>();
+        this(0, 0, new ArrayList<>(), new ArrayList<>());
     }
 
     public Game(int rows, int cols, List<String> characters, List<String> words) {

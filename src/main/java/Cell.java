@@ -4,23 +4,22 @@ import java.util.List;
 import java.util.Map;
 
 public class Cell {
+    public static final String SEARCHABLE_WORD_REGEX_PATTERN = "^[A-Z]+$";
+
     private int rowPos;
     private int colPos;
     private String letter;
     private Map<String, Cell> adjacentCells;
 
     public Cell() {
-        this.rowPos = 0;
-        this.colPos = 0;
-        this.letter = "";
-        this.adjacentCells = new HashMap<String, Cell>();
+        this(0,0, "");
     }
 
     public Cell(int row, int col, String letter) {
         this.rowPos = row;
         this.colPos = col;
         this.letter = letter;
-        this.adjacentCells = new HashMap<String, Cell>();
+        this.adjacentCells = new HashMap<>();
     }
 
     public int getRowPos(){
@@ -35,10 +34,8 @@ public class Cell {
         return this.letter;
     }
 
-    public void addAdjacentCell(String direction, Cell cell) {
-        if (!this.adjacentCells.containsKey(direction)) {
-            this.adjacentCells.put(direction, cell);
-        }
+    public void addAdjacentCellIfAbsent(String direction, Cell cell) {
+        this.adjacentCells.putIfAbsent(direction, cell);
     }
 
     public Cell getAdjacentCell(String direction) {
@@ -64,7 +61,7 @@ public class Cell {
     }
 
     public static boolean matchesString(Cell c, String str, String direction) {
-        if (c == null) {
+        if (c == null || !str.matches(SEARCHABLE_WORD_REGEX_PATTERN)) {
             return false;
         }
         if (str.length() == 1) {
@@ -79,6 +76,9 @@ public class Cell {
     public static Cell getInlineCell(Cell c, String direction, int distance) {
         // i = 0 is the passed in c, so start at 1
         for (int i = 1; i < distance; i++) {
+            if (c == null) {
+                break;
+            }
             c = c.getAdjacentCell(direction);
         }
         return c;

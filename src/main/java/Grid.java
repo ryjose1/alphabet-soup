@@ -43,10 +43,11 @@ public class Grid {
     }
 
     public Grid(int rows, int cols, List<String> characters) {
-        this.rows = rows;
-        this.cols = cols;
-        ArrayList<List<Cell>> grid = new ArrayList<>();
-        HashMap<String, List<Cell>> locationMap = new HashMap<>();
+        this(rows, cols);
+
+        if (!isValidGridInput(rows, cols, characters)) {
+            return;
+        }
 
         // Fill out the data structures with the passed in characters
         for (int i = 0; i < rows; i++) {
@@ -58,19 +59,26 @@ public class Grid {
                 // Add cell to the 2D array
                 row.add(c);
                 // Add cell to the lookup map
-                if (locationMap.containsKey(letter)) {
-                    locationMap.get(letter).add(c);
+                if (this.locationMap.containsKey(letter)) {
+                    this.locationMap.get(letter).add(c);
                 } else {
                     List<Cell> bucket = new ArrayList<>();
                     bucket.add(c);
-                    locationMap.put(letter, bucket);
+                    this.locationMap.put(letter, bucket);
                 }
             }
-            grid.add(row);
+            this.grid.add(row);
         }
+    }
 
-        this.grid = grid;
-        this.locationMap = locationMap;
+    private boolean isValidGridInput(int rows, int cols, List<String> characters) {
+        if (rows < 0 || cols < 0) {
+            return false;
+        } else if (characters.size() != rows * cols) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // One-time up-front processing to fill out each cell's adjacent cells table
@@ -88,7 +96,7 @@ public class Grid {
             int adjRow = c.getRowPos() + d.dy;
             int adjCol = c.getColPos() + d.dx;
             if (inBounds(adjRow, adjCol)) {
-                c.addAdjacentCell(d.direction, this.getCell(adjRow, adjCol));
+                c.addAdjacentCellIfAbsent(d.direction, this.getCell(adjRow, adjCol));
             }
         }
     }
@@ -98,14 +106,18 @@ public class Grid {
     }
 
     public Cell getCell(int row, int col) {
-        if (inBounds(row, col)) {
-            return this.grid.get(row).get(col);
-        } else {
+        if (!inBounds(row, col)) {
             return null;
         }
+
+        return this.grid.get(row).get(col);
     }
 
     public String findWord(String word) {
+        if (!word.matches(Parser.DISPLAYABLE_WORD_REGEX_PATTERN)) {
+            return "";
+        }
+
         // Transform human-readable terms into searchable terms
         String searchTerm = word.replace(" ", "");
 
@@ -135,7 +147,14 @@ public class Grid {
                 break;
             }
         }
-        return formatOutput(word, start, end);
+
+        // If end position is not found, return empty string
+        if (start != null && end != null) {
+            return formatOutput(word, start, end);
+        } else {
+            return "";
+        }
+
     }
 
     private String formatOutput (String word, Cell start, Cell end){

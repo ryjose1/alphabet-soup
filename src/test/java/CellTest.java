@@ -11,8 +11,8 @@ public class CellTest {
 
         Cell c = new Cell(1, 1, "C");
 
-        c.addAdjacentCell("RIGHT", new Cell(1, 2, "D"));
-        c.addAdjacentCell("DOWN", new Cell(2, 1, "E"));
+        c.addAdjacentCellIfAbsent("RIGHT", new Cell(1, 2, "D"));
+        c.addAdjacentCellIfAbsent("DOWN", new Cell(2, 1, "E"));
 
         List<String> actual = c.isAdjacentTo("D");
 
@@ -25,9 +25,9 @@ public class CellTest {
 
         Cell c = new Cell(1, 1, "C");
 
-        c.addAdjacentCell("RIGHT", new Cell(1, 2, "D"));
-        c.addAdjacentCell("LEFT", new Cell(1, 2, "D"));
-        c.addAdjacentCell("DOWN", new Cell(2, 1, "E"));
+        c.addAdjacentCellIfAbsent("RIGHT", new Cell(1, 2, "D"));
+        c.addAdjacentCellIfAbsent("LEFT", new Cell(1, 2, "D"));
+        c.addAdjacentCellIfAbsent("DOWN", new Cell(2, 1, "E"));
 
         List<String> actual = c.isAdjacentTo("D");
 
@@ -58,11 +58,11 @@ public class CellTest {
         Cell nodeE = new Cell(1, 5, "A");
         Cell nodeF = new Cell(1, 6, "R");
 
-        nodeA.addAdjacentCell("RIGHT", nodeB);
-        nodeB.addAdjacentCell("RIGHT", nodeC);
-        nodeC.addAdjacentCell("RIGHT", nodeD);
-        nodeD.addAdjacentCell("RIGHT", nodeE);
-        nodeE.addAdjacentCell("RIGHT", nodeF);
+        nodeA.addAdjacentCellIfAbsent("RIGHT", nodeB);
+        nodeB.addAdjacentCellIfAbsent("RIGHT", nodeC);
+        nodeC.addAdjacentCellIfAbsent("RIGHT", nodeD);
+        nodeD.addAdjacentCellIfAbsent("RIGHT", nodeE);
+        nodeE.addAdjacentCellIfAbsent("RIGHT", nodeF);
 
         Assert.assertTrue(Cell.matchesString(nodeA, "FOOBAR", "RIGHT"));
         Assert.assertFalse(Cell.matchesString(nodeA, "FOOBAR", "DOWN"));
@@ -74,8 +74,8 @@ public class CellTest {
         Cell nodeB = new Cell(1, 2, "O");
         Cell nodeC = new Cell(1, 3, "O");
 
-        nodeA.addAdjacentCell("RIGHT", nodeB);
-        nodeB.addAdjacentCell("RIGHT", nodeC);
+        nodeA.addAdjacentCellIfAbsent("RIGHT", nodeB);
+        nodeB.addAdjacentCellIfAbsent("RIGHT", nodeC);
 
         Assert.assertFalse(Cell.matchesString(nodeA, "FOOBAR", "RIGHT"));
     }
@@ -88,8 +88,8 @@ public class CellTest {
         Cell d = new Cell(2, 2, "D");
         Cell e = new Cell(3, 3, "E");
 
-        c.addAdjacentCell("SW", d);
-        d.addAdjacentCell("SW", e);
+        c.addAdjacentCellIfAbsent("SW", d);
+        d.addAdjacentCellIfAbsent("SW", e);
 
         String actual = Cell.getInlineCell(c, "SW", 3).printPosition();
 
